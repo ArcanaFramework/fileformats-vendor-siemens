@@ -3,8 +3,8 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "fileformats-CHANGEME-extras"
-description = "Extra methods for accessing and manipulating the underlying data referenced by fileformats-CHANGEME classes"
+name = "fileformats-vendor-siemens-extras"
+description = "Extra methods for accessing and manipulating the underlying data referenced by fileformats-vendor-siemens classes"
 readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = [
@@ -57,21 +57,21 @@ converters = [
 ]
 
 [project.urls]
-repository = "https://github.com/ArcanaFramework/fileformats-CHANGEME"
+repository = "https://github.com/ArcanaFramework/fileformats-vendor-siemens"
 
 [tool.hatch.version]
 source = "vcs"
 raw-options = {root = ".."}
 
 [tool.hatch.build.hooks.vcs]
-version-file = "fileformats/extras/CHANGEME/_version.py"
+version-file = "fileformats/extras/vendor/siemens/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["fileformats"]
 
 [tool.black]
 target-version = ['py38']
-exclude = "fileformats/extras/CHANGEME/_version.py"
+exclude = "fileformats/extras/vendor/siemens/_version.py"
 
 [tool.codespell]
 ignore-words = ".codespell-ignorewords"
