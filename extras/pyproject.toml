@@ -13,10 +13,10 @@ dependencies = [
 ]
 license = {file = "LICENSE"}
 authors = [
-    {name = "<YOUR-NAME>", email = "<YOUR-EMAIL>"},
+    {name = "Thomas G. Close", email = "tom.g.close@gmail.com"},
 ]
 maintainers = [
-    {name = "<YOUR-NAME>", email = "<YOUR-EMAIL>"},
+    {name = "Thomas G. Close", email = "tom.g.close@gmail.com"},
 ]
 keywords = [
     "file formats",

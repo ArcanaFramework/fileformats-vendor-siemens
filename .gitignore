@@ -22,4 +22,5 @@ __pycache__
 ~*
 /.venv
 /fileformats/**/_version.py
+/extras/fileformats/**/_version.py
 .mypy_cache
