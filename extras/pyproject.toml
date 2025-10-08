@@ -8,8 +8,9 @@ description = "Extra methods for accessing and manipulating the underlying data 
 readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = [
-    "fileformats >= 0.10",
-    "pydra >= 0.22.0"
+    "fileformats-vendor-siemens",
+    "medimages4tests >=0.3.0",
+    "pydicom >=2.3.1",
 ]
 license = {file = "LICENSE"}
 authors = [
