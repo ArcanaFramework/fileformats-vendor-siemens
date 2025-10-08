@@ -49,10 +49,10 @@ jobs:
     - name: Pytest
       run: pytest -vvs --cov fileformats --cov-config .coveragerc --cov-report xml .
     - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: ArcanaFramework/fileformats-vendor-siemens
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: ArcanaFramework/fileformats-vendor-siemens
 
   build:
     needs: [test]
