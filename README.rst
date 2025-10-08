@@ -1,7 +1,7 @@
 FileFormats Extension - Siemens
 ===============================
-.. image:: https://github.com/arcanaframework/fileformats-vendor-siemens/actions/workflows/tests.yml/badge.svg
-    :target: https://github.com/arcanaframework/fileformats-vendor-siemens/actions/workflows/tests.yml
+.. image:: https://github.com/arcanaframework/fileformats-vendor-siemens/actions/workflows/ci-cd.yml/badge.svg
+    :target: https://github.com/arcanaframework/fileformats-vendor-siemens/actions/workflows/ci-cd.yml
 .. image:: https://codecov.io/gh/arcanaframework/fileformats-vendor-siemens/branch/main/graph/badge.svg?token=UIS0OGPST7
     :target: https://codecov.io/gh/arcanaframework/fileformats-vendor-siemens
 .. image:: https://img.shields.io/github/stars/ArcanaFramework/fileformats-vendor-siemens.svg
