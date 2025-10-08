@@ -47,7 +47,12 @@ jobs:
     - name: MyPy
       run: mypy --install-types --non-interactive  --no-warn-unused-ignores .
     - name: Pytest
-      run: pytest -vvs --cov fileformats --cov-config .coveragerc --cov-report xml .
+      run: |
+        pytest -vvs \
+        --cov fileformats.vendor.siemens \
+        --cov fileformats.extras.vendor.siemens \
+        --cov-config .coveragerc \
+        --cov-report xml .
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
       with:
