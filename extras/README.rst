@@ -1,18 +1,5 @@
-How to customise this template
-==============================
-
-#. Name your repository with the name fileformats-<SUBPACKAGE-TO-ADD-EXTRAS-TO>-extras
-#. Rename the `fileformats/extras/vendor/siemens` directory to the name of the fileformats subpackage the extras are for
-#. Search and replace "CHANGEME" with the name of the fileformats subpackage the extras are to be added
-#. Replace name + email placeholders in `pyproject.toml` for developers and maintainers
-#. Implement selected "extras" by implementing functions decorated by one of the ``*_extra`` hooks defined in the target fileformats class
-#. Ensure that the decorated are imported into the extras package root, i.e. `fileformats/extra/vendor/siemens`
-#. Delete these instructions
-
-...
-
 FileFormats-vendor-siemens Extras
-===========================
+=================================
 .. image:: https://github.com/arcanaframework/fileformats-vendor-siemens-extras/actions/workflows/tests.yml/badge.svg
     :target: https://github.com/arcanaframework/fileformats-vendor-siemens-extras/actions/workflows/tests.yml
 .. image:: https://codecov.io/gh/arcanaframework/fileformats-vendor-siemens-extras/branch/main/graph/badge.svg?token=UIS0OGPST7
