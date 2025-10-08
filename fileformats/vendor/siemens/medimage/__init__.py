@@ -1,6 +1,6 @@
 from .syngo_mi import (
     SyngoMi_RawData_Vr20b,
-    Biograph128Vision_Vr20b_LargePetRawData,
+    SyngoMi_LargeRawData_Vr20b,
     SyngoMi_ListMode_Vr20b,
     SyngoMi_Sinogram_Vr20b,
     SyngoMi_DynamicSinogram_Vr20b,
@@ -15,7 +15,7 @@ from .syngo_mi import (
 
 __all__ = [
     "SyngoMi_RawData_Vr20b",
-    "Biograph128Vision_Vr20b_LargePetRawData",
+    "SyngoMi_LargeRawData_Vr20b",
     "SyngoMi_ListMode_Vr20b",
     "SyngoMi_Sinogram_Vr20b",
     "SyngoMi_DynamicSinogram_Vr20b",

@@ -82,9 +82,7 @@ class SyngoMi_RawData_Vr20b(PetRawData):
     def dicom_header_limits(self) -> ty.Tuple[int, int]:
         """Try either method to determine the dicom header limits. If both fail, raise an error"""
         try:
-            return Biograph128Vision_Vr20b_LargePetRawData(
-                self.fspaths
-            ).dicom_header_limits
+            return SyngoMi_LargeRawData_Vr20b(self.fspaths).dicom_header_limits
         except FormatMismatchError:
             try:
                 return SyngoMi_CtSpl_Vr20b(self.fspaths).dicom_header_limits
@@ -110,7 +108,7 @@ class SyngoMi_RawData_Vr20b(PetRawData):
         raise NotImplementedError
 
 
-class Biograph128Vision_Vr20b_LargePetRawData(WithMagicNumber, SyngoMi_RawData_Vr20b):
+class SyngoMi_LargeRawData_Vr20b(WithMagicNumber, SyngoMi_RawData_Vr20b):
     """PET raw data format as produced by Siemens Biograph 128 Vision. It is used to
     store a range of raw PET data such as list-mode, calibration and sinogram files.
 
@@ -148,47 +146,41 @@ class Biograph128Vision_Vr20b_LargePetRawData(WithMagicNumber, SyngoMi_RawData_V
         )
 
 
-class SyngoMi_ListMode_Vr20b(Biograph128Vision_Vr20b_LargePetRawData, PetListMode):
+class SyngoMi_ListMode_Vr20b(SyngoMi_LargeRawData_Vr20b, PetListMode):
     expected_image_type = "PET_LISTMODE"
 
 
-class SyngoMi_Sinogram_Vr20b(Biograph128Vision_Vr20b_LargePetRawData, PetSinogram):
+class SyngoMi_Sinogram_Vr20b(SyngoMi_LargeRawData_Vr20b, PetSinogram):
     "histogrammed projection data in a reconstruction-friendly format"
 
     expected_image_type = "PET_EM_SINOGRAM"
 
 
-class SyngoMi_DynamicSinogram_Vr20b(
-    Biograph128Vision_Vr20b_LargePetRawData, PetSinogram
-):
+class SyngoMi_DynamicSinogram_Vr20b(SyngoMi_LargeRawData_Vr20b, PetSinogram):
     "histogrammed projection data in a reconstruction-friendly format"
 
     expected_image_type = "PET_SINO_DYNAMIC"
 
 
-class SyngoMi_CountRate_Vr20b(Biograph128Vision_Vr20b_LargePetRawData, PetCountRate):
+class SyngoMi_CountRate_Vr20b(SyngoMi_LargeRawData_Vr20b, PetCountRate):
     "number of prompt/random/single events per unit time"
 
     expected_image_type = "PET_COUNTRATE"
 
 
-class SyngoMi_Parameterisation_Vr20b(
-    Biograph128Vision_Vr20b_LargePetRawData, PetParameterisation
-):
+class SyngoMi_Parameterisation_Vr20b(SyngoMi_LargeRawData_Vr20b, PetParameterisation):
     "number of prompt/random/single events per unit time"
 
     expected_image_type = "PET_REPLAY_PARAM"
 
 
-class SyngoMi_Normalisation_Vr20b(
-    Biograph128Vision_Vr20b_LargePetRawData, PetNormalisation
-):
+class SyngoMi_Normalisation_Vr20b(SyngoMi_LargeRawData_Vr20b, PetNormalisation):
     "normalisation scan or the current cross calibration factor"
 
     expected_image_type = "PET_CALIBRATION"
 
 
-class SyngoMi_Physio_Vr20b(Biograph128Vision_Vr20b_LargePetRawData, PetPhysio):
+class SyngoMi_Physio_Vr20b(SyngoMi_LargeRawData_Vr20b, PetPhysio):
     "normalisation scan or the current cross calibration factor"
 
     expected_image_type = "PET_PHYSIO"

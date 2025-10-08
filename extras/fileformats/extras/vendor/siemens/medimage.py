@@ -29,7 +29,7 @@ from fileformats.core import extra_implementation, FileSet
 from fileformats.medimage.dicom import DicomImage
 from fileformats.vendor.siemens.medimage import (
     SyngoMi_RawData_Vr20b,
-    Biograph128Vision_Vr20b_LargePetRawData,
+    SyngoMi_LargeRawData_Vr20b,
     SyngoMi_ListMode_Vr20b,
     SyngoMi_Sinogram_Vr20b,
     SyngoMi_DynamicSinogramSeries_Vr20b,
@@ -55,7 +55,7 @@ TagListType: TypeAlias = ty.Union[
 
 @extra_implementation(FileSet.read_metadata)
 def siemens_pet_raw_data_read_metadata(
-    pet_raw_data: Biograph128Vision_Vr20b_LargePetRawData,
+    pet_raw_data: SyngoMi_LargeRawData_Vr20b,
     specific_tags: ty.Optional[TagListType] = None,
     **kwargs: ty.Any,
 ) -> ty.Mapping[str, ty.Any]:
@@ -72,7 +72,7 @@ def siemens_pet_raw_data_read_metadata(
 
 @extra_implementation(SyngoMi_RawData_Vr20b.load_pydicom)
 def siemens_pet_raw_data_load_pydicom(
-    pet_raw_data: Biograph128Vision_Vr20b_LargePetRawData,
+    pet_raw_data: SyngoMi_LargeRawData_Vr20b,
     specific_tags: ty.Optional[TagListType] = None,
     **kwargs: ty.Any,
 ) -> pydicom.Dataset:
