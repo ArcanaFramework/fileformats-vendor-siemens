@@ -28,15 +28,15 @@ from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.petct_spl impor
 from fileformats.core import extra_implementation, FileSet
 from fileformats.medimage.dicom import DicomImage
 from fileformats.vendor.siemens.medimage import (
-    SyngoMi_RawData_Vr20b,
-    SyngoMi_LargeRawData_Vr20b,
-    SyngoMi_ListMode_Vr20b,
-    SyngoMi_Sinogram_Vr20b,
-    SyngoMi_DynamicSinogramSeries_Vr20b,
-    SyngoMi_CountRate_Vr20b,
-    SyngoMi_Normalisation_Vr20b,
-    SyngoMi_Parameterisation_Vr20b,
-    SyngoMi_CtSpl_Vr20b,
+    SyngoMi_Vr20b_RawData,
+    SyngoMi_Vr20b_LargeRawData,
+    SyngoMi_Vr20b_ListMode,
+    SyngoMi_Vr20b_Sinogram,
+    SyngoMi_Vr20b_DynamicSinogramSeries,
+    SyngoMi_Vr20b_CountRate,
+    SyngoMi_Vr20b_Normalisation,
+    SyngoMi_Vr20b_Parameterisation,
+    SyngoMi_Vr20b_CtSpl,
 )
 from fileformats.core.io import BinaryIOWindow
 
@@ -55,7 +55,7 @@ TagListType: TypeAlias = ty.Union[
 
 @extra_implementation(FileSet.read_metadata)
 def siemens_pet_raw_data_read_metadata(
-    pet_raw_data: SyngoMi_LargeRawData_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_LargeRawData,
     specific_tags: ty.Optional[TagListType] = None,
     **kwargs: ty.Any,
 ) -> ty.Mapping[str, ty.Any]:
@@ -70,9 +70,9 @@ def siemens_pet_raw_data_read_metadata(
     return DicomImage.pydicom_to_dict(dcm)
 
 
-@extra_implementation(SyngoMi_RawData_Vr20b.load_pydicom)
+@extra_implementation(SyngoMi_Vr20b_RawData.load_pydicom)
 def siemens_pet_raw_data_load_pydicom(
-    pet_raw_data: SyngoMi_LargeRawData_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_LargeRawData,
     specific_tags: ty.Optional[TagListType] = None,
     **kwargs: ty.Any,
 ) -> pydicom.Dataset:
@@ -89,7 +89,7 @@ def siemens_pet_raw_data_load_pydicom(
 
 @extra_implementation(FileSet.read_metadata)
 def siemens_petct_raw_data_read_metadata(
-    pet_raw_data: SyngoMi_CtSpl_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_CtSpl,
     specific_tags: ty.Optional[TagListType] = None,
     **kwargs: ty.Any,
 ) -> ty.Mapping[str, ty.Any]:
@@ -103,9 +103,9 @@ def siemens_petct_raw_data_read_metadata(
     return DicomImage.pydicom_to_dict(dcm)
 
 
-@extra_implementation(SyngoMi_RawData_Vr20b.load_pydicom)
+@extra_implementation(SyngoMi_Vr20b_RawData.load_pydicom)
 def siemens_petct_raw_data_load_pydicom(
-    pet_raw_data: SyngoMi_CtSpl_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_CtSpl,
     specific_tags: ty.Optional[TagListType] = None,
     **kwargs: ty.Any,
 ) -> pydicom.Dataset:
@@ -121,7 +121,7 @@ def siemens_petct_raw_data_load_pydicom(
 
 @extra_implementation(FileSet.read_metadata)
 def siemens_pet_dynamic_sinogram_series_read_metadata(
-    pet_raw_data: SyngoMi_DynamicSinogramSeries_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_DynamicSinogramSeries,
     specific_tags: ty.Optional[TagListType] = None,
     **kwargs: ty.Any,
 ) -> ty.Mapping[str, ty.Any]:
@@ -158,7 +158,7 @@ def siemens_pet_dynamic_sinogram_series_read_metadata(
 
 @extra_implementation(FileSet.generate_sample_data)
 def siemens_pet_listmode_generate_sample_data(
-    pet_raw_data: SyngoMi_ListMode_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_ListMode,
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_listmode_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
@@ -166,7 +166,7 @@ def siemens_pet_listmode_generate_sample_data(
 
 @extra_implementation(FileSet.generate_sample_data)
 def siemens_pet_countrate_generate_sample_data(
-    pet_raw_data: SyngoMi_CountRate_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_CountRate,
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_countrate_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
@@ -174,7 +174,7 @@ def siemens_pet_countrate_generate_sample_data(
 
 @extra_implementation(FileSet.generate_sample_data)
 def siemens_pet_sinogram_generate_sample_data(
-    pet_raw_data: SyngoMi_Sinogram_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_Sinogram,
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_sinogram_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
@@ -182,7 +182,7 @@ def siemens_pet_sinogram_generate_sample_data(
 
 @extra_implementation(FileSet.generate_sample_data)
 def siemens_pet_dynamics_sino_generate_sample_data(
-    pet_raw_data: SyngoMi_DynamicSinogramSeries_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_DynamicSinogramSeries,
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_dynamics_sino_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
@@ -190,7 +190,7 @@ def siemens_pet_dynamics_sino_generate_sample_data(
 
 @extra_implementation(FileSet.generate_sample_data)
 def siemens_pet_normalisation_generate_sample_data(
-    pet_raw_data: SyngoMi_Normalisation_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_Normalisation,
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_calibration_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
@@ -198,7 +198,7 @@ def siemens_pet_normalisation_generate_sample_data(
 
 @extra_implementation(FileSet.generate_sample_data)
 def siemens_petct_spl_generate_sample_data(
-    pet_raw_data: SyngoMi_CtSpl_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_CtSpl,
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_petct_spl_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
@@ -206,7 +206,7 @@ def siemens_petct_spl_generate_sample_data(
 
 @extra_implementation(FileSet.generate_sample_data)
 def siemens_pet_parameterisation_generate_sample_data(
-    pet_raw_data: SyngoMi_Parameterisation_Vr20b,
+    pet_raw_data: SyngoMi_Vr20b_Parameterisation,
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_replay_param_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]

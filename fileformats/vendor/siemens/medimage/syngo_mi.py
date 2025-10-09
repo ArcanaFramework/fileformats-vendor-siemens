@@ -28,7 +28,7 @@ if ty.TYPE_CHECKING:
     import pydicom
 
 
-class SyngoMi_RawData_Vr20b(PetRawData):
+class SyngoMi_Vr20b_RawData(PetRawData):
     """PET raw data format as produced by Siemens Biograph 128 Vision. It is used to
     store a range of raw PET data such as list-mode, calibration and sinogram files.
 
@@ -69,8 +69,8 @@ class SyngoMi_RawData_Vr20b(PetRawData):
                     f"({self.expected_image_type!r})"
                 )
             return image_type
-        assert isinstance(self._image_type_seq[-1], str)
-        return self._image_type_seq[-1]
+        assert isinstance(self._image_type_seq[2], str)
+        return self._image_type_seq[2]
 
     @mtime_cached_property
     def _image_type_seq(self) -> ty.List[str]:
@@ -82,10 +82,10 @@ class SyngoMi_RawData_Vr20b(PetRawData):
     def dicom_header_limits(self) -> ty.Tuple[int, int]:
         """Try either method to determine the dicom header limits. If both fail, raise an error"""
         try:
-            return SyngoMi_LargeRawData_Vr20b(self.fspaths).dicom_header_limits
+            return SyngoMi_Vr20b_LargeRawData(self.fspaths).dicom_header_limits
         except FormatMismatchError:
             try:
-                return SyngoMi_CtSpl_Vr20b(self.fspaths).dicom_header_limits
+                return SyngoMi_Vr20b_CtSpl(self.fspaths).dicom_header_limits
             except FormatMismatchError:
                 raise FormatMismatchError(
                     f"File {self.fspath!r} does not contain a valid DICOM header"
@@ -108,7 +108,7 @@ class SyngoMi_RawData_Vr20b(PetRawData):
         raise NotImplementedError
 
 
-class SyngoMi_LargeRawData_Vr20b(WithMagicNumber, SyngoMi_RawData_Vr20b):
+class SyngoMi_Vr20b_LargeRawData(WithMagicNumber, SyngoMi_Vr20b_RawData):
     """PET raw data format as produced by Siemens Biograph 128 Vision. It is used to
     store a range of raw PET data such as list-mode, calibration and sinogram files.
 
@@ -146,50 +146,50 @@ class SyngoMi_LargeRawData_Vr20b(WithMagicNumber, SyngoMi_RawData_Vr20b):
         )
 
 
-class SyngoMi_ListMode_Vr20b(SyngoMi_LargeRawData_Vr20b, PetListMode):
+class SyngoMi_Vr20b_ListMode(SyngoMi_Vr20b_LargeRawData, PetListMode):
     expected_image_type = "PET_LISTMODE"
 
 
-class SyngoMi_Sinogram_Vr20b(SyngoMi_LargeRawData_Vr20b, PetSinogram):
+class SyngoMi_Vr20b_Sinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):
     "histogrammed projection data in a reconstruction-friendly format"
 
     expected_image_type = "PET_EM_SINOGRAM"
 
 
-class SyngoMi_DynamicSinogram_Vr20b(SyngoMi_LargeRawData_Vr20b, PetSinogram):
+class SyngoMi_Vr20b_DynamicSinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):
     "histogrammed projection data in a reconstruction-friendly format"
 
     expected_image_type = "PET_SINO_DYNAMIC"
 
 
-class SyngoMi_CountRate_Vr20b(SyngoMi_LargeRawData_Vr20b, PetCountRate):
+class SyngoMi_Vr20b_CountRate(SyngoMi_Vr20b_LargeRawData, PetCountRate):
     "number of prompt/random/single events per unit time"
 
     expected_image_type = "PET_COUNTRATE"
 
 
-class SyngoMi_Parameterisation_Vr20b(SyngoMi_LargeRawData_Vr20b, PetParameterisation):
+class SyngoMi_Vr20b_Parameterisation(SyngoMi_Vr20b_LargeRawData, PetParameterisation):
     "number of prompt/random/single events per unit time"
 
     expected_image_type = "PET_REPLAY_PARAM"
 
 
-class SyngoMi_Normalisation_Vr20b(SyngoMi_LargeRawData_Vr20b, PetNormalisation):
+class SyngoMi_Vr20b_Normalisation(SyngoMi_Vr20b_LargeRawData, PetNormalisation):
     "normalisation scan or the current cross calibration factor"
 
     expected_image_type = "PET_CALIBRATION"
 
 
-class SyngoMi_Physio_Vr20b(SyngoMi_LargeRawData_Vr20b, PetPhysio):
+class SyngoMi_Vr20b_Physio(SyngoMi_Vr20b_LargeRawData, PetPhysio):
     "normalisation scan or the current cross calibration factor"
 
     expected_image_type = "PET_PHYSIO"
 
 
-class SyngoMi_DynamicSinogramSeries_Vr20b(TypedSet):
+class SyngoMi_Vr20b_DynamicSinogramSeries(TypedSet):
     "Series of sinogram images"
 
-    content_types = (SyngoMi_DynamicSinogram_Vr20b,)
+    content_types = (SyngoMi_Vr20b_DynamicSinogram,)
 
     @classmethod
     def from_paths(
@@ -222,7 +222,7 @@ class SyngoMi_DynamicSinogramSeries_Vr20b(TypedSet):
         (
             sinograms,
             remaining,
-        ) = SyngoMi_DynamicSinogram_Vr20b.from_paths(
+        ) = SyngoMi_Vr20b_DynamicSinogram.from_paths(
             fspaths, common_ok=common_ok, **kwargs
         )
         series_dict = defaultdict(list)
@@ -233,7 +233,7 @@ class SyngoMi_DynamicSinogramSeries_Vr20b(TypedSet):
         return set([cls(d.fspath for d in s) for s in series_dict.values()]), remaining
 
     @mtime_cached_property
-    def contents(self) -> ty.List[SyngoMi_Sinogram_Vr20b]:
+    def contents(self) -> ty.List[SyngoMi_Vr20b_Sinogram]:
         return sorted(TypedSet.contents.__get__(self), key=pet_rd_sort_key)
 
     ID_TAGS = (
@@ -242,14 +242,14 @@ class SyngoMi_DynamicSinogramSeries_Vr20b(TypedSet):
     )  # "StudyInstanceUID", "SeriesNumber"
 
 
-def pet_rd_sort_key(ptd: SyngoMi_RawData_Vr20b) -> str:
+def pet_rd_sort_key(ptd: SyngoMi_Vr20b_RawData) -> str:
     """Sorts DICOM objects by SOPInstanceUID"""
     acquisition_time = ptd.read_tag((0x0008, 0x0032))
     assert isinstance(acquisition_time, str)
     return acquisition_time
 
 
-class SyngoMi_CtSpl_Vr20b(WithMagicNumber, SyngoMi_RawData_Vr20b):
+class SyngoMi_Vr20b_CtSpl(WithMagicNumber, SyngoMi_Vr20b_RawData):
     """PET CT raw data format as produced by Siemens Biograph 128 Vision. It is used to
     store a range PETCT_SPL type files
 
