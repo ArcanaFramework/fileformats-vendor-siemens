@@ -12,6 +12,17 @@ from .syngo_mi import (
     SyngoMi_Vr20b_CtSpl,
 )
 
+Biograph128Vision_Vr20b_PetRawData = SyngoMi_Vr20b_RawData
+Biograph128Vision_Vr20b_PetLargeRawData = SyngoMi_Vr20b_LargeRawData
+Biograph128Vision_Vr20b_PetListMode = SyngoMi_Vr20b_ListMode
+Biograph128Vision_Vr20b_PetSinogram = SyngoMi_Vr20b_Sinogram
+Biograph128Vision_Vr20b_PetDynamicSinogram = SyngoMi_Vr20b_DynamicSinogram
+Biograph128Vision_Vr20b_PetCountRate = SyngoMi_Vr20b_CountRate
+Biograph128Vision_Vr20b_PetParameterisation = SyngoMi_Vr20b_Parameterisation
+Biograph128Vision_Vr20b_PetNormalisation = SyngoMi_Vr20b_Normalisation
+Biograph128Vision_Vr20b_PetPhysio = SyngoMi_Vr20b_Physio
+Biograph128Vision_Vr20b_PetDynamicSinogramSeries = SyngoMi_Vr20b_DynamicSinogramSeries
+Biograph128Vision_Vr20b_PetCtSpl = SyngoMi_Vr20b_CtSpl
 
 __all__ = [
     "SyngoMi_Vr20b_RawData",
