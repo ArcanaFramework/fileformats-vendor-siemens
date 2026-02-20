@@ -28,6 +28,7 @@ from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.petct_spl impor
 from fileformats.core import extra_implementation, FileSet
 from fileformats.medimage.dicom import DicomImage
 from fileformats.vendor.siemens.medimage import (
+    SiemensRda,
     SyngoMi_Vr20b_RawData,
     SyngoMi_Vr20b_LargeRawData,
     SyngoMi_Vr20b_ListMode,
@@ -211,6 +212,27 @@ def siemens_pet_parameterisation_generate_sample_data(
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_replay_param_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
+
+
+@extra_implementation(FileSet.read_metadata)
+def siemens_rda_read_metadata(
+    rda: SiemensRda,
+    **kwargs: ty.Any,
+) -> ty.Mapping[str, ty.Any]:
+    HEADER_END = b">>> End of header <<<"
+    raw = rda.read_contents()
+    end_idx = raw.find(HEADER_END)
+    if end_idx == -1:
+        return {}
+    header_text = raw[: end_idx].decode("latin-1")
+    metadata: ty.Dict[str, ty.Any] = {}
+    for line in header_text.splitlines():
+        if line.startswith(">>>"):
+            continue
+        if ": " in line:
+            key, value = line.split(": ", 1)
+            metadata[key.strip()] = value.strip()
+    return metadata
 
 
 @extra_implementation(TwixRawData.read_twix)

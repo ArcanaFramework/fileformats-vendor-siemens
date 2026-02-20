@@ -11,6 +11,7 @@ from .syngo_mi import (
     SyngoMi_Vr20b_DynamicSinogramSeries,
     SyngoMi_Vr20b_CtSpl,
 )
+from .rda import SiemensRda
 from .twix import TwixRawData
 
 Biograph128Vision_Vr20b_PetRawData = SyngoMi_Vr20b_RawData
@@ -37,5 +38,6 @@ __all__ = [
     "SyngoMi_Vr20b_Physio",
     "SyngoMi_Vr20b_DynamicSinogramSeries",
     "SyngoMi_Vr20b_CtSpl",
+    "SiemensRda",
     "TwixRawData",
 ]
