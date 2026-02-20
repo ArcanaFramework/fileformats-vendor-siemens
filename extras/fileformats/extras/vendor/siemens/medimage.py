@@ -37,6 +37,7 @@ from fileformats.vendor.siemens.medimage import (
     SyngoMi_Vr20b_Normalisation,
     SyngoMi_Vr20b_Parameterisation,
     SyngoMi_Vr20b_CtSpl,
+    TwixRawData,
 )
 from fileformats.core.io import BinaryIOWindow
 
@@ -210,3 +211,37 @@ def siemens_pet_parameterisation_generate_sample_data(
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_replay_param_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
+
+
+@extra_implementation(TwixRawData.read_twix)
+def twix_raw_data_read_twix(
+    twix_data: TwixRawData,
+    **kwargs: ty.Any,
+) -> ty.Any:
+    import twixtools
+
+    return twixtools.read_twix(str(twix_data.fspath), **kwargs)
+
+
+@extra_implementation(TwixRawData.map_twix)
+def twix_raw_data_map_twix(
+    twix_data: TwixRawData,
+    **kwargs: ty.Any,
+) -> ty.Any:
+    import twixtools
+
+    return twixtools.map_twix(str(twix_data.fspath), **kwargs)
+
+
+@extra_implementation(FileSet.read_metadata)
+def twix_raw_data_read_metadata(
+    twix_data: TwixRawData,
+    **kwargs: ty.Any,
+) -> ty.Mapping[str, ty.Any]:
+    import twixtools
+
+    scans = twixtools.read_twix(
+        str(twix_data.fspath), parse_data=False, verbose=False
+    )
+    # Return the parsed protocol headers from the last measurement (the actual scan)
+    return scans[-1].get("hdr", {})
