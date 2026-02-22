@@ -11,6 +11,7 @@ from .syngo_mi import (
     SyngoMi_Vr20b_DynamicSinogramSeries,
     SyngoMi_Vr20b_CtSpl,
 )
+from .puls import SiemensPuls
 from .rda import SiemensRda
 from .twix import TwixRawData
 
@@ -38,6 +39,7 @@ __all__ = [
     "SyngoMi_Vr20b_Physio",
     "SyngoMi_Vr20b_DynamicSinogramSeries",
     "SyngoMi_Vr20b_CtSpl",
+    "SiemensPuls",
     "SiemensRda",
     "TwixRawData",
 ]

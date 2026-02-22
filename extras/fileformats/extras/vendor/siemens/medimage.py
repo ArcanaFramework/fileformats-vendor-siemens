@@ -28,6 +28,7 @@ from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.petct_spl impor
 from fileformats.core import extra_implementation, FileSet
 from fileformats.medimage.dicom import DicomImage
 from fileformats.vendor.siemens.medimage import (
+    SiemensPuls,
     SiemensRda,
     SyngoMi_Vr20b_RawData,
     SyngoMi_Vr20b_LargeRawData,
@@ -228,6 +229,24 @@ def siemens_rda_read_metadata(
     metadata: ty.Dict[str, ty.Any] = {}
     for line in header_text.splitlines():
         if line.startswith(">>>"):
+            continue
+        if ": " in line:
+            key, value = line.split(": ", 1)
+            metadata[key.strip()] = value.strip()
+    return metadata
+
+
+@extra_implementation(FileSet.read_metadata)
+def siemens_puls_read_metadata(
+    puls: SiemensPuls,
+    **kwargs: ty.Any,
+) -> ty.Mapping[str, ty.Any]:
+    text = puls.read_contents()
+    metadata: ty.Dict[str, ty.Any] = {}
+    for line in text.splitlines():
+        line = line.strip()
+        # Based off of one example file, ends in 6003
+        if not line or line == "6003":
             continue
         if ": " in line:
             key, value = line.split(": ", 1)
