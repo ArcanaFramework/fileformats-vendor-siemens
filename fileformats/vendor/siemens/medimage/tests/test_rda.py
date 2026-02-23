@@ -1,6 +1,6 @@
 import pytest
 from fileformats.core.exceptions import FormatMismatchError
-from fileformats.vendor.siemens.medimage import SiemensRda
+from fileformats.vendor.siemens.medimage import SyngoMR_Xa_Rda
 
 HEADER_START = b">>> Begin of header <<<"
 HEADER_END = b">>> End of header <<<"
@@ -25,14 +25,14 @@ def _make_rda(
 
 def test_valid_rda(tmp_path):
     rda_file = _make_rda(tmp_path, "test.rda", header_lines=["PatientName: John"])
-    rda = SiemensRda(rda_file)
+    rda = SyngoMR_Xa_Rda(rda_file)
     assert rda.is_valid_rda is True
 
 
 def test_wrong_extension(tmp_path):
     rda_file = _make_rda(tmp_path, "test.txt", header_lines=["PatientName: John"])
     with pytest.raises(FormatMismatchError):
-        SiemensRda(rda_file)
+        SyngoMR_Xa_Rda(rda_file)
 
 
 def test_missing_header_marker(tmp_path):
@@ -40,7 +40,7 @@ def test_missing_header_marker(tmp_path):
         tmp_path, "test.rda", header_lines=["PatientName: John"], start_marker=False
     )
     with pytest.raises(FormatMismatchError):
-        SiemensRda(rda_file)
+        SyngoMR_Xa_Rda(rda_file)
 
 
 def test_metadata_parsing(tmp_path):
@@ -51,7 +51,7 @@ def test_metadata_parsing(tmp_path):
         "TE: 30",
     ]
     rda_file = _make_rda(tmp_path, "test.rda", header_lines=header_lines)
-    rda = SiemensRda(rda_file)
+    rda = SyngoMR_Xa_Rda(rda_file)
     metadata = rda.read_metadata()
     assert metadata["PatientName"] == "James"
     assert metadata["PatientID"] == "12345"
@@ -61,7 +61,7 @@ def test_metadata_parsing(tmp_path):
 
 def test_metadata_empty_header(tmp_path):
     rda_file = _make_rda(tmp_path, "test.rda", header_lines=[])
-    rda = SiemensRda(rda_file)
+    rda = SyngoMR_Xa_Rda(rda_file)
     metadata = rda.read_metadata()
     assert metadata == {}
 
@@ -69,6 +69,6 @@ def test_metadata_empty_header(tmp_path):
 def test_metadata_colon_in_value(tmp_path):
     header_lines = ["ScanTime: 10:30:00"]
     rda_file = _make_rda(tmp_path, "test.rda", header_lines=header_lines)
-    rda = SiemensRda(rda_file)
+    rda = SyngoMR_Xa_Rda(rda_file)
     metadata = rda.read_metadata()
     assert metadata["ScanTime"] == "10:30:00"

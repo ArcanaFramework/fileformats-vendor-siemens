@@ -28,8 +28,8 @@ from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.petct_spl impor
 from fileformats.core import extra_implementation, FileSet
 from fileformats.medimage.dicom import DicomImage
 from fileformats.vendor.siemens.medimage import (
-    SiemensPuls,
-    SiemensRda,
+    SyngoMR_Xa_Puls,
+    SyngoMR_Xa_Rda,
     SyngoMi_Vr20b_RawData,
     SyngoMi_Vr20b_LargeRawData,
     SyngoMi_Vr20b_ListMode,
@@ -39,7 +39,7 @@ from fileformats.vendor.siemens.medimage import (
     SyngoMi_Vr20b_Normalisation,
     SyngoMi_Vr20b_Parameterisation,
     SyngoMi_Vr20b_CtSpl,
-    TwixRawData,
+    SyngoMR_Xa_Twix,
 )
 from fileformats.core.io import BinaryIOWindow
 
@@ -217,7 +217,7 @@ def siemens_pet_parameterisation_generate_sample_data(
 
 @extra_implementation(FileSet.read_metadata)
 def siemens_rda_read_metadata(
-    rda: SiemensRda,
+    rda: SyngoMR_Xa_Rda,
     **kwargs: ty.Any,
 ) -> ty.Mapping[str, ty.Any]:
     HEADER_END = b">>> End of header <<<"
@@ -238,7 +238,7 @@ def siemens_rda_read_metadata(
 
 @extra_implementation(FileSet.read_metadata)
 def siemens_puls_read_metadata(
-    puls: SiemensPuls,
+    puls: SyngoMR_Xa_Puls,
     **kwargs: ty.Any,
 ) -> ty.Mapping[str, ty.Any]:
     text = puls.read_contents()
@@ -254,9 +254,9 @@ def siemens_puls_read_metadata(
     return metadata
 
 
-@extra_implementation(TwixRawData.read_twix)
+@extra_implementation(SyngoMR_Xa_Twix.read_twix)
 def twix_raw_data_read_twix(
-    twix_data: TwixRawData,
+    twix_data: SyngoMR_Xa_Twix,
     **kwargs: ty.Any,
 ) -> ty.Any:
     import twixtools
@@ -264,9 +264,9 @@ def twix_raw_data_read_twix(
     return twixtools.read_twix(str(twix_data.fspath), **kwargs)
 
 
-@extra_implementation(TwixRawData.map_twix)
+@extra_implementation(SyngoMR_Xa_Twix.map_twix)
 def twix_raw_data_map_twix(
-    twix_data: TwixRawData,
+    twix_data: SyngoMR_Xa_Twix,
     **kwargs: ty.Any,
 ) -> ty.Any:
     import twixtools
@@ -276,7 +276,7 @@ def twix_raw_data_map_twix(
 
 @extra_implementation(FileSet.read_metadata)
 def twix_raw_data_read_metadata(
-    twix_data: TwixRawData,
+    twix_data: SyngoMR_Xa_Twix,
     **kwargs: ty.Any,
 ) -> ty.Mapping[str, ty.Any]:
     import twixtools
