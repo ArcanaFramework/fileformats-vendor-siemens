@@ -28,7 +28,7 @@ if ty.TYPE_CHECKING:
     import pydicom
 
 
-class SyngoMi_Vr20b_RawData(PetRawData):
+class SyngoMi_Vr20b_RawData(PetRawData):  # type: ignore[misc]
     """PET raw data format as produced by Siemens Biograph 128 Vision. It is used to
     store a range of raw PET data such as list-mode, calibration and sinogram files.
 
@@ -43,11 +43,11 @@ class SyngoMi_Vr20b_RawData(PetRawData):
     def read_tag(self, tag: ty.Tuple[int, int]) -> ty.Union[str, bytes, None]:
         with self.open() as f:
             window = BinaryIOWindow(
-                f,  # type: ignore[arg-type]
+                f,
                 *self.dicom_header_limits,
             )
             value = get_dicom_tag(window, tag)
-        return value
+        return value  # type: ignore[no-any-return]
 
     @validated_property
     def image_type(self) -> str:
@@ -146,41 +146,41 @@ class SyngoMi_Vr20b_LargeRawData(WithMagicNumber, SyngoMi_Vr20b_RawData):
         )
 
 
-class SyngoMi_Vr20b_ListMode(SyngoMi_Vr20b_LargeRawData, PetListMode):
+class SyngoMi_Vr20b_ListMode(SyngoMi_Vr20b_LargeRawData, PetListMode):  # type: ignore[misc]
     expected_image_type = "PET_LISTMODE"
 
 
-class SyngoMi_Vr20b_Sinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):
+class SyngoMi_Vr20b_Sinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):  # type: ignore[misc]
     "histogrammed projection data in a reconstruction-friendly format"
 
     expected_image_type = "PET_EM_SINOGRAM"
 
 
-class SyngoMi_Vr20b_DynamicSinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):
+class SyngoMi_Vr20b_DynamicSinogram(SyngoMi_Vr20b_LargeRawData, PetSinogram):  # type: ignore[misc]
     "histogrammed projection data in a reconstruction-friendly format"
 
     expected_image_type = "PET_SINO_DYNAMIC"
 
 
-class SyngoMi_Vr20b_CountRate(SyngoMi_Vr20b_LargeRawData, PetCountRate):
+class SyngoMi_Vr20b_CountRate(SyngoMi_Vr20b_LargeRawData, PetCountRate):  # type: ignore[misc]
     "number of prompt/random/single events per unit time"
 
     expected_image_type = "PET_COUNTRATE"
 
 
-class SyngoMi_Vr20b_Parameterisation(SyngoMi_Vr20b_LargeRawData, PetParameterisation):
+class SyngoMi_Vr20b_Parameterisation(SyngoMi_Vr20b_LargeRawData, PetParameterisation):  # type: ignore[misc]
     "number of prompt/random/single events per unit time"
 
     expected_image_type = "PET_REPLAY_PARAM"
 
 
-class SyngoMi_Vr20b_Normalisation(SyngoMi_Vr20b_LargeRawData, PetNormalisation):
+class SyngoMi_Vr20b_Normalisation(SyngoMi_Vr20b_LargeRawData, PetNormalisation):  # type: ignore[misc]
     "normalisation scan or the current cross calibration factor"
 
     expected_image_type = "PET_CALIBRATION"
 
 
-class SyngoMi_Vr20b_Physio(SyngoMi_Vr20b_LargeRawData, PetPhysio):
+class SyngoMi_Vr20b_Physio(SyngoMi_Vr20b_LargeRawData, PetPhysio):  # type: ignore[misc]
     "normalisation scan or the current cross calibration factor"
 
     expected_image_type = "PET_PHYSIO"

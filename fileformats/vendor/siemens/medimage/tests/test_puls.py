@@ -2,7 +2,8 @@ import pytest
 from fileformats.core.exceptions import FormatMismatchError
 from fileformats.vendor.siemens.medimage import SiemensPuls
 
-def _make_puls(tmp_path, name, content):
+
+def _make_puls(tmp_path, name, content):  # codespell:ignore puls
     p = tmp_path / name
     p.write_text(content)
     return p

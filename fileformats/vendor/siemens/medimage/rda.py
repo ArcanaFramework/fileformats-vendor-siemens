@@ -5,7 +5,7 @@ from fileformats.medimage.raw.mri import Rda
 HEADER_START = b">>> Begin of header <<<"
 
 
-class SiemensRda(Rda):
+class SiemensRda(Rda):  # type: ignore[misc]
     """Siemens MRI spectroscopy data in .rda format.
 
     The file starts with a plain-text header delimited by

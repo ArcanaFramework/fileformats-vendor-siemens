@@ -65,12 +65,12 @@ def siemens_pet_raw_data_read_metadata(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,  # type: ignore[arg-type]
+            f,
             pet_raw_data.dicom_header_offset,
             pet_raw_data.dcm_hdr_size_int_offset,
         )
         dcm = pydicom.dcmread(window, specific_tags=specific_tags)
-    return DicomImage.pydicom_to_dict(dcm)
+    return DicomImage.pydicom_to_dict(dcm)  # type: ignore[no-any-return]
 
 
 @extra_implementation(SyngoMi_Vr20b_RawData.load_pydicom)
@@ -82,7 +82,7 @@ def siemens_pet_raw_data_load_pydicom(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,  # type: ignore[arg-type]
+            f,
             pet_raw_data.dicom_header_offset,
             pet_raw_data.dcm_hdr_size_int_offset,
         )
@@ -99,11 +99,11 @@ def siemens_petct_raw_data_read_metadata(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,  # type: ignore[arg-type]
+            f,
             *pet_raw_data.dicom_header_limits,
         )
         dcm = pydicom.dcmread(window, specific_tags=specific_tags)
-    return DicomImage.pydicom_to_dict(dcm)
+    return DicomImage.pydicom_to_dict(dcm)  # type: ignore[no-any-return]
 
 
 @extra_implementation(SyngoMi_Vr20b_RawData.load_pydicom)
@@ -115,7 +115,7 @@ def siemens_petct_raw_data_load_pydicom(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,  # type: ignore[arg-type]
+            f,
             *pet_raw_data.dicom_header_limits,
         )
         dcm = pydicom.dcmread(window, specific_tags=specific_tags)
@@ -225,7 +225,7 @@ def siemens_rda_read_metadata(
     end_idx = raw.find(HEADER_END)
     if end_idx == -1:
         return {}
-    header_text = raw[: end_idx].decode("latin-1")
+    header_text = raw[:end_idx].decode("latin-1")
     metadata: ty.Dict[str, ty.Any] = {}
     for line in header_text.splitlines():
         if line.startswith(">>>"):
@@ -281,8 +281,6 @@ def twix_raw_data_read_metadata(
 ) -> ty.Mapping[str, ty.Any]:
     import twixtools
 
-    scans = twixtools.read_twix(
-        str(twix_data.fspath), parse_data=False, verbose=False
-    )
+    scans = twixtools.read_twix(str(twix_data.fspath), parse_data=False, verbose=False)
     # Return the parsed protocol headers from the last measurement (the actual scan)
-    return scans[-1].get("hdr", {})
+    return scans[-1].get("hdr", {})  # type: ignore[no-any-return]

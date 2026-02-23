@@ -6,7 +6,9 @@ HEADER_START = b">>> Begin of header <<<"
 HEADER_END = b">>> End of header <<<"
 
 
-def _make_rda(tmp_path, name, header_lines=None, start_marker=True, binary_tail=b"\x00" * 64):
+def _make_rda(
+    tmp_path, name, header_lines=None, start_marker=True, binary_tail=b"\x00" * 64
+):
     """Helper to create a synthetic .rda file."""
     parts = []
     if start_marker:
@@ -34,7 +36,9 @@ def test_wrong_extension(tmp_path):
 
 
 def test_missing_header_marker(tmp_path):
-    rda_file = _make_rda(tmp_path, "test.rda", header_lines=["PatientName: John"], start_marker=False)
+    rda_file = _make_rda(
+        tmp_path, "test.rda", header_lines=["PatientName: John"], start_marker=False
+    )
     with pytest.raises(FormatMismatchError):
         SiemensRda(rda_file)
 
