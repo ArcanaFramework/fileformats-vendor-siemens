@@ -81,7 +81,7 @@ jobs:
       with:
         python-version: '3.12'
     - name: Install build tools
-      run: python3 -m pip install build twine
+      run: python3 -m pip install build twine --break-system-packages
     - name: Build source and wheel distributions
       run: python3 -m build ${{ matrix.pkg[1] }}
     - name: Check distributions
