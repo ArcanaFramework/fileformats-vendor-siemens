@@ -5,7 +5,7 @@ from fileformats.core.exceptions import FormatMismatchError
 from fileformats.medimage.raw.mri import Kspace
 
 
-class SyngoMR_Xa_Twix(Kspace):  # type: ignore[misc]
+class SyngoMr_Xa_Twix(Kspace):  # type: ignore[misc]
     """Siemens MRI raw k-space data in twix (.dat) format.
 
     Version detection follows twixtools.helpers.idea_version_check:

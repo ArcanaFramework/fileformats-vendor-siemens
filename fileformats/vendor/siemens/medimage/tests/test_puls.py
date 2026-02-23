@@ -1,6 +1,6 @@
 import pytest
 from fileformats.core.exceptions import FormatMismatchError
-from fileformats.vendor.siemens.medimage import SyngoMR_Xa_Puls
+from fileformats.vendor.siemens.medimage import SyngoMr_Xa_Puls
 
 
 def _make_puls(tmp_path, name, content):  # codespell:ignore puls
@@ -21,19 +21,19 @@ MINIMAL_PULS = (
 
 def test_valid_puls(tmp_path):
     p = _make_puls(tmp_path, "test.puls", MINIMAL_PULS)
-    puls = SyngoMR_Xa_Puls(p)
+    puls = SyngoMr_Xa_Puls(p)
     assert puls.fspath == p
 
 
 def test_wrong_extension(tmp_path):
     p = _make_puls(tmp_path, "test.txt", MINIMAL_PULS)
     with pytest.raises(FormatMismatchError):
-        SyngoMR_Xa_Puls(p)
+        SyngoMr_Xa_Puls(p)
 
 
 def test_metadata_parsing(tmp_path):
     p = _make_puls(tmp_path, "test.puls", MINIMAL_PULS)
-    puls = SyngoMR_Xa_Puls(p)
+    puls = SyngoMr_Xa_Puls(p)
     metadata = puls.read_metadata()
     assert metadata["PULS Freq Per"] == "72 830"
     assert metadata["LogStartMDHTime"] == "49470570"

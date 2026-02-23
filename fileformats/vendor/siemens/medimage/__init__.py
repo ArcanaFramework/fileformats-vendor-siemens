@@ -11,9 +11,9 @@ from .syngo_mi import (
     SyngoMi_Vr20b_DynamicSinogramSeries,
     SyngoMi_Vr20b_CtSpl,
 )
-from .puls import SyngoMR_Xa_Puls
-from .rda import SyngoMR_Xa_Rda
-from .twix import SyngoMR_Xa_Twix
+from .puls import SyngoMr_Xa_Puls
+from .rda import SyngoMr_Xa_Rda
+from .twix import SyngoMr_Xa_Twix
 
 Biograph128Vision_Vr20b_PetRawData = SyngoMi_Vr20b_RawData
 Biograph128Vision_Vr20b_PetLargeRawData = SyngoMi_Vr20b_LargeRawData
@@ -39,7 +39,7 @@ __all__ = [
     "SyngoMi_Vr20b_Physio",
     "SyngoMi_Vr20b_DynamicSinogramSeries",
     "SyngoMi_Vr20b_CtSpl",
-    "SyngoMR_Xa_Puls",
-    "SyngoMR_Xa_Rda",
-    "SyngoMR_Xa_Twix",
+    "SyngoMr_Xa_Puls",
+    "SyngoMr_Xa_Rda",
+    "SyngoMr_Xa_Twix",
 ]

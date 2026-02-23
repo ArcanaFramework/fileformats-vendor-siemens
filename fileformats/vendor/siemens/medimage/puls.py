@@ -1,7 +1,7 @@
 from fileformats.generic import UnicodeFile
 
 
-class SyngoMR_Xa_Puls(UnicodeFile):
+class SyngoMr_Xa_Puls(UnicodeFile):
     """Siemens PMU (Physiological Monitoring Unit) pulse oximetry data.
 
     Plain-text file containing pulse signal samples followed by
