@@ -28,6 +28,8 @@ from medimages4tests.dummy.raw.pet.siemens.biograph_vision.vr20b.petct_spl impor
 from fileformats.core import extra_implementation, FileSet
 from fileformats.medimage.dicom import DicomImage
 from fileformats.vendor.siemens.medimage import (
+    SyngoMr_Xa_Puls,
+    SyngoMr_Xa_Rda,
     SyngoMi_Vr20b_RawData,
     SyngoMi_Vr20b_LargeRawData,
     SyngoMi_Vr20b_ListMode,
@@ -37,6 +39,7 @@ from fileformats.vendor.siemens.medimage import (
     SyngoMi_Vr20b_Normalisation,
     SyngoMi_Vr20b_Parameterisation,
     SyngoMi_Vr20b_CtSpl,
+    SyngoMr_Xa_Twix,
 )
 from fileformats.core.io import BinaryIOWindow
 
@@ -67,7 +70,7 @@ def siemens_pet_raw_data_read_metadata(
             pet_raw_data.dcm_hdr_size_int_offset,
         )
         dcm = pydicom.dcmread(window, specific_tags=specific_tags)
-    return DicomImage.pydicom_to_dict(dcm)
+    return DicomImage.pydicom_to_dict(dcm)  # type: ignore[no-any-return]
 
 
 @extra_implementation(SyngoMi_Vr20b_RawData.load_pydicom)
@@ -100,7 +103,7 @@ def siemens_petct_raw_data_read_metadata(
             *pet_raw_data.dicom_header_limits,
         )
         dcm = pydicom.dcmread(window, specific_tags=specific_tags)
-    return DicomImage.pydicom_to_dict(dcm)
+    return DicomImage.pydicom_to_dict(dcm)  # type: ignore[no-any-return]
 
 
 @extra_implementation(SyngoMi_Vr20b_RawData.load_pydicom)
@@ -210,3 +213,74 @@ def siemens_pet_parameterisation_generate_sample_data(
     generator: SampleFileGenerator,
 ) -> ty.List[Path]:
     return get_pet_replay_param_data(out_dir=generator.dest_dir)  # type: ignore[no-any-return]
+
+
+@extra_implementation(FileSet.read_metadata)
+def siemens_rda_read_metadata(
+    rda: SyngoMr_Xa_Rda,
+    **kwargs: ty.Any,
+) -> ty.Mapping[str, ty.Any]:
+    HEADER_END = b">>> End of header <<<"
+    raw = rda.read_contents()
+    end_idx = raw.find(HEADER_END)
+    if end_idx == -1:
+        return {}
+    header_text = raw[:end_idx].decode("latin-1")
+    metadata: ty.Dict[str, ty.Any] = {}
+    for line in header_text.splitlines():
+        if line.startswith(">>>"):
+            continue
+        if ": " in line:
+            key, value = line.split(": ", 1)
+            metadata[key.strip()] = value.strip()
+    return metadata
+
+
+@extra_implementation(FileSet.read_metadata)
+def siemens_puls_read_metadata(
+    puls: SyngoMr_Xa_Puls,
+    **kwargs: ty.Any,
+) -> ty.Mapping[str, ty.Any]:
+    text = puls.read_contents()
+    metadata: ty.Dict[str, ty.Any] = {}
+    for line in text.splitlines():
+        line = line.strip()
+        # Based off of one example file, ends in 6003
+        if not line or line == "6003":
+            continue
+        if ": " in line:
+            key, value = line.split(": ", 1)
+            metadata[key.strip()] = value.strip()
+    return metadata
+
+
+@extra_implementation(SyngoMr_Xa_Twix.read_twix)
+def twix_raw_data_read_twix(
+    twix_data: SyngoMr_Xa_Twix,
+    **kwargs: ty.Any,
+) -> ty.Any:
+    import twixtools
+
+    return twixtools.read_twix(str(twix_data.fspath), **kwargs)
+
+
+@extra_implementation(SyngoMr_Xa_Twix.map_twix)
+def twix_raw_data_map_twix(
+    twix_data: SyngoMr_Xa_Twix,
+    **kwargs: ty.Any,
+) -> ty.Any:
+    import twixtools
+
+    return twixtools.map_twix(str(twix_data.fspath), **kwargs)
+
+
+@extra_implementation(FileSet.read_metadata)
+def twix_raw_data_read_metadata(
+    twix_data: SyngoMr_Xa_Twix,
+    **kwargs: ty.Any,
+) -> ty.Mapping[str, ty.Any]:
+    import twixtools
+
+    scans = twixtools.read_twix(str(twix_data.fspath), parse_data=False, verbose=False)
+    # Return the parsed protocol headers from the last measurement (the actual scan)
+    return scans[-1].get("hdr", {})  # type: ignore[no-any-return]

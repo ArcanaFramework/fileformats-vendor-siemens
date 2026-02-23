@@ -11,6 +11,7 @@ dependencies = [
     "fileformats-vendor-siemens",
     "medimages4tests >=0.3.0",
     "pydicom >=2.3.1",
+    "twixtools",
 ]
 license = {file = "LICENSE"}
 authors = [
