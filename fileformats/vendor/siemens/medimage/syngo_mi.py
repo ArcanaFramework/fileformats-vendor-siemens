@@ -43,7 +43,7 @@ class SyngoMi_Vr20b_RawData(PetRawData):  # type: ignore[misc]
     def read_tag(self, tag: ty.Tuple[int, int]) -> ty.Union[str, bytes, None]:
         with self.open() as f:
             window = BinaryIOWindow(
-                f,
+                f,  # type: ignore[arg-type]
                 *self.dicom_header_limits,
             )
             value = get_dicom_tag(window, tag)

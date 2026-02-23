@@ -65,7 +65,7 @@ def siemens_pet_raw_data_read_metadata(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,
+            f,  # type: ignore[arg-type]
             pet_raw_data.dicom_header_offset,
             pet_raw_data.dcm_hdr_size_int_offset,
         )
@@ -82,7 +82,7 @@ def siemens_pet_raw_data_load_pydicom(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,
+            f,  # type: ignore[arg-type]
             pet_raw_data.dicom_header_offset,
             pet_raw_data.dcm_hdr_size_int_offset,
         )
@@ -99,7 +99,7 @@ def siemens_petct_raw_data_read_metadata(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,
+            f,  # type: ignore[arg-type]
             *pet_raw_data.dicom_header_limits,
         )
         dcm = pydicom.dcmread(window, specific_tags=specific_tags)
@@ -115,7 +115,7 @@ def siemens_petct_raw_data_load_pydicom(
 
     with pet_raw_data.open() as f:
         window = BinaryIOWindow(
-            f,
+            f,  # type: ignore[arg-type]
             *pet_raw_data.dicom_header_limits,
         )
         dcm = pydicom.dcmread(window, specific_tags=specific_tags)
